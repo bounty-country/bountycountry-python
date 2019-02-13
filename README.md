@@ -36,25 +36,25 @@ Set `bountycountry.BC_SECRET_KEY` to your secret key value.
 import bountycountry
 bountycountry.BC_PUBLIC_KEY = "....your.public.key.here...."
 bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
+```
 
-# start a live stream of dataset 
-
-# First define a handler that will do 'something' (you decide) to each batch of items received
+## Stream a live dataset
+```python
+# First define a handler that will do 'something' (you decide) to each batch of items received.
+# Batch size is configurable up to a max of 250 items. 
 def myHandler(batch):
   for item in batch:
     #do something with each item
     print(item)
   
-bountycountry.getLiveStream('dataset-id-goes-here', StreamHandler=myHandler)
+bountycountry.getLiveStream('dataset-id-goes-here', BatchSize=250, StreamHandler=myHandler)
 ```
 The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. 
 
 
-### Stream a Specific Time Range
+### Get a specific time range within a stream 
 
 The last 24 hours of data for a stream can be queried as a specific range using `bountycountry.getStreamRange`. 
-
-
 
 Timestamps must be expressed in EpochTime format integers:
 ```python
@@ -68,25 +68,40 @@ epochtime = int(time.mktime(time.strptime("2019-04-01 19:20:00", "%Y-%m-%d %H:%M
 
 ```
 
-The Stream Range is a **python generator** meaning we iterate over each item batch returned using a for loop. By default a batch will return 250 items.   
+The Stream Range is a **python generator** so you can iterate over each batch of items returned using any loop. 
+By default a batch will return 250 items.   
 
 ```python
+bountycountry.getStreamRange('dataset-id-goes-here', FromTime = 1554106800, ToTime = 1554109000, Order='Newest', BatchSize = 250, Limit = 2000)
 
-
-# list charges
-stripe.Charge.list(
-    api_key="sk_test_...",
-    stripe_account="acct_..."
-)
-
-# retrieve single charge
-stripe.Charge.retrieve(
-    "ch_1A2PUG2eZvKYlo2C4Rej1B9d",
-    api_key="sk_test_...",
-    stripe_account="acct_..."
-)
+# OPTIONS
+# If a FromTime and ToTime are not provided the function returns the 250 newest items in the stream
+    #FromTime - epoch timestamp of the earliest point in time to query
+    #ToTime - epoch timestamp of the latest point in time to query
+    #Order - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
+    #Limit - function will stop when Limit number of items have been returned (default = None)
+    #AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
+    #Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range
+    #BatchSize - the number of results to return per request/page (maximum of 250)
 ```
 
+## Post items to a Stream
+
+The `getLiveStream` function will upload your items in batches of 25. Items can be accepted in one of three formats:
+* 'array' - accepts a python array of strings or objects. Objects will be json-serialized.
+* 'lines' - reads a file (provide a string path) line by line and uploads each line as an individual item
+* 'dir' - reads all files in a directory (provide a string path) and uploads the text contexts. Non-utf-8 encoded files are skipped.
+
+```python
+items = [
+    {"somekey":[{"something nested":"value","someelsenested":"somevalue"},       {"someotherkey":"someothervalue","somefinalkey":"somefinalvalue"}]},
+    "a string",
+    "another string",
+    "final string"
+]
+
+bountycountry.postStream('dataset-id-goes-here', items, format='array')
+```
 
 <!--
 # vim: set tw=79:
