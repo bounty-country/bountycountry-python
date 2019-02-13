@@ -39,7 +39,7 @@ bountycountry.BC_PUBLIC_KEY = "....your.public.key.here...."
 bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
 ```
 
-## Stream a live dataset
+### Stream a live dataset
 ```python
 # First define a handler that will do 'something' (you decide) to each batch of items received.
 def myHandler(batch):
@@ -52,7 +52,7 @@ bountycountry.getLiveStream('dataset-id-goes-here', BatchSize=250, StreamHandler
 The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. 
 
 
-## Get a specific time range within a stream 
+### Get a specific time range within a stream 
 
 A specific time range in the last 24 hours of data in a stream can be queried using `bountycountry.getStreamRange`. 
 
@@ -91,7 +91,7 @@ If a FromTime and ToTime are not provided the function returns the 250 newest it
     * BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
 
 
-## Post items to a Stream
+### Post items to a Stream
 
 The `getLiveStream` function will upload your items in batches of 25. Items can be accepted in one of three formats:
 * 'array' - accepts a python array of strings or objects. Objects will be json-serialized.
