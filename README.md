@@ -82,13 +82,13 @@ for batch in results:
 ```
 #### OPTIONS
 If a FromTime and ToTime are not provided the function returns the 250 newest items in the stream
-    * FromTime - epoch timestamp of the earliest point in time to query
-    * ToTime - epoch timestamp of the latest point in time to query
-    * Order - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
-    * Limit - function will stop when Limit number of items have been returned (default = None, format = integer)
-    * AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
-    * Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
-    * BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
+* FromTime - epoch timestamp of the earliest point in time to query
+* ToTime - epoch timestamp of the latest point in time to query
+* Order - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
+* Limit - function will stop when Limit number of items have been returned (default = None, format = integer)
+* AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
+* Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
+* BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
 
 
 ### Post items to a Stream
