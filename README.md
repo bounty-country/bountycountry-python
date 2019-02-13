@@ -34,6 +34,7 @@ Set `bountycountry.BC_SECRET_KEY` to your secret key value.
 
 ```python
 import bountycountry
+
 bountycountry.BC_PUBLIC_KEY = "....your.public.key.here...."
 bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
 ```
@@ -41,7 +42,6 @@ bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
 ## Stream a live dataset
 ```python
 # First define a handler that will do 'something' (you decide) to each batch of items received.
-# Batch size is configurable up to a max of 250 items. 
 def myHandler(batch):
   for item in batch:
     #do something with each item
@@ -54,7 +54,7 @@ The `getLiveStream` function will indefinitely poll Bounty Country for the lates
 
 ### Get a specific time range within a stream 
 
-The last 24 hours of data for a stream can be queried as a specific range using `bountycountry.getStreamRange`. 
+A specific time range in the last 24 hours of data in a stream can be queried using `bountycountry.getStreamRange`. 
 
 Timestamps must be expressed in EpochTime format integers:
 ```python
@@ -68,21 +68,27 @@ epochtime = int(time.mktime(time.strptime("2019-04-01 19:20:00", "%Y-%m-%d %H:%M
 
 ```
 
-The Stream Range is a **python generator** so you can iterate over each batch of items returned using any loop. 
+The Stream Range is a **python generator** so you can iterate over each batch/page of items returned using any loop. 
 By default a batch will return 250 items.   
 
 ```python
-bountycountry.getStreamRange('dataset-id-goes-here', FromTime = 1554106800, ToTime = 1554109000, Order='Newest', BatchSize = 250, Limit = 2000)
+# create generator
+results = bountycountry.getStreamRange('dataset-id-goes-here', FromTime = 1554106800, ToTime = 1554109000)
+
+# iterate over batches/pages 
+for batch in results:
+    for item in batch:
+        print(item)
 
 # OPTIONS
 # If a FromTime and ToTime are not provided the function returns the 250 newest items in the stream
     #FromTime - epoch timestamp of the earliest point in time to query
     #ToTime - epoch timestamp of the latest point in time to query
     #Order - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
-    #Limit - function will stop when Limit number of items have been returned (default = None)
+    #Limit - function will stop when Limit number of items have been returned (default = None, format = integer)
     #AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
-    #Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range
-    #BatchSize - the number of results to return per request/page (maximum of 250)
+    #Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
+    #BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
 ```
 
 ## Post items to a Stream
