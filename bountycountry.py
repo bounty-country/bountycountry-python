@@ -148,11 +148,7 @@ def getStreamRange(datasetid, FromTime=None, ToTime=None, Order='Newest', Last=N
 			body = r.json()
 			total_count = body['Count']
 			print("Retrieved ",body['Count']," items in total.")
-			
-			if StreamHandler is not None:
-				StreamHandler(body)
-			else:
-				yield(body)
+			yield(body)
 			
 			if AutoPaginate == True:
 				while ('Last' in body) and (total_count < Limit):			
@@ -187,10 +183,7 @@ def getStreamRange(datasetid, FromTime=None, ToTime=None, Order='Newest', Last=N
 								print("Retrieved ", (total_count-dif), " items in total.")
 								break
 						print("Retrieved ", total_count, " items in total.")
-						if StreamHandler is not None:
-							StreamHandler(body)
-						else:
-							yield(body)				
+						yield(body)				
 					
 					elif r.status_code == 429:
 						exponential_wait = exponential_wait + 1
