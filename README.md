@@ -71,10 +71,10 @@ The `getLiveStream` function will indefinitely poll Bounty Country for the lates
 You can also manage costs by setting the MaxHourlyRequests parameter. 
 
 #### OPTIONS
-* BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
-* MinimizeRequests - whether to reduce request frequency to maximize result set size (reduce cost). Set to False if you have a strong requirement for minimal data latency and are less concerned by cost. (default=True)
-* MaxHourlyRequests - the maximum number of requests to perform per hour, if exceeded the function will sleep for OnMaxWait seconds (default=None, format = integer)
-* OnMaxWait - the number of seconds to wait if MaxHourlyRequests is exceeded (default = 0, format = integer)
+* **BatchSize** - the number of results to return per request/page (maximum of 250, default=250, format = integer)
+* **MinimizeRequests** - whether to reduce request frequency to maximize result set size (reduce cost). Set to False if you have a strong requirement for minimal data latency and are less concerned by cost. (default=True)
+* **MaxHourlyRequests** - the maximum number of requests to perform per hour, if exceeded the function will sleep for OnMaxWait seconds (default=None, format = integer)
+* **OnMaxWait** - the number of seconds to wait if MaxHourlyRequests is exceeded (default = 0, format = integer)
 
 
 ### Get a specific time range within a stream 
@@ -107,22 +107,22 @@ for batch in results:
 ```
 #### OPTIONS
 If a FromTime and ToTime are not provided the function returns the 250 newest items in the stream
-* FromTime - epoch timestamp of the earliest point in time to query
-* ToTime - epoch timestamp of the latest point in time to query
-* Order - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
-* Limit - function will stop when Limit number of items have been returned (default = None, format = integer)
-* AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
-* Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
-* BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
+* **FromTime** - epoch timestamp of the earliest point in time to query
+* **ToTime** - epoch timestamp of the latest point in time to query
+* **Order** - the order in which to return results (options = 'Newest','Oldest', default = 'Newest')
+* **Limit** - function will stop when Limit number of items have been returned (default = None, format = integer)
+* **AutoPaginate** - function will paginate through results until there are no more available OR until Limit is reached (default = True)
+* **Last** - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
+* **BatchSize** - the number of results to return per request/page (maximum of 250, default=250, format = integer)
 
 
 
 ### Post items to a Stream
 
-The `getLiveStream` function will upload your items in batches of 25. Items can be accepted in one of three formats:
-* 'array' - accepts a python array of strings or objects. Objects will be json-serialized.
-* 'lines' - reads a file (provide a string path) line by line and uploads each line as an individual item
-* 'dir' - reads all files in a directory (provide a string path) and uploads the text contexts. Non-utf-8 encoded files are skipped.
+The `getLiveStream` function will upload your items in batches of 25. Items can be accepted in one of three formats specified in the **format** parameter:
+* **'array'** - accepts a python array of strings or objects. Objects will be json-serialized.
+* **'lines'** - reads a file (provide a string path) line by line and uploads each line as an individual item
+* **'dir'** - reads all files in a directory (provide a string path) and uploads the text contexts. Non-utf-8 encoded files are skipped.
 
 ```python
 items = [
