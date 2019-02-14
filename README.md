@@ -40,17 +40,36 @@ bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
 ```
 
 ### Stream a live dataset
-```python
-# First define a handler that will do 'something' (you decide) to each batch of items received.
-def myHandler(batch):
-  for item in batch:
-    #do something with each item
-    print(item)
-  
-bountycountry.getLiveStream('dataset-id-goes-here', BatchSize=250, StreamHandler=myHandler)
-```
-The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. 
 
+The stream data is returned in JSON batches via a **python generator**. You can iterate over each batch/page of items returned using any loop. By default a batch will consist of 250 items.  
+
+```python
+results = bountycountry.getLiveStream('dataset-id-goes-here')
+
+for batch in results:
+    #do something with each batch of results
+    print(batch)
+```
+Batch Format
+```python
+{'Items':[
+    {'ttl':1550188588,
+    'upload_timestamp':1550102188.420983,
+    'item_data':'the actual data goes here as a string or JSON object'
+    },
+    ]
+}   
+```
+
+The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. By default, the function will also attempt to minimize the requests used (and resultant costs to the user) by introducing additional waits if the result set return is less than the BatchSize (which is set to the maximum of 250 items by default). 
+
+You can also manage costs by setting the MaxHourlyRequests parameter. 
+
+#### OPTIONS
+* BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
+* MinimizeRequests - whether to reduce request frequency to maximize result set size (reduce cost). Set to False if you have a strong requirement for minimal data latency and are less concerned by cost. (default=True)
+* MaxHourlyRequests - the maximum number of requests to perform per hour, if exceeded the function will sleep for OnMaxWait seconds (default=None, format = integer)
+* OnMaxWait - the number of seconds to wait if MaxHourlyRequests is exceeded (default = 0, format = integer)
 
 ### Get a specific time range within a stream 
 
