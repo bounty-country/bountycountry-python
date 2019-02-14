@@ -58,6 +58,10 @@ Batch Format
     'upload_timestamp':1550102188.420983,
     'item_data':'the actual data goes here as a string or JSON object'
     },
+    {'ttl':1550189000,
+    'upload_timestamp':1550109000.420983,
+    'item_data':{"somekey":"somevalue","somelist":[204, 306, 99]}
+    },    
     ]
 }   
 ```
@@ -96,10 +100,10 @@ By default a batch will return 250 items.
 # create generator
 results = bountycountry.getStreamRange('dataset-id-goes-here', FromTime = 1554106800, ToTime = 1554109000)
 
-# iterate over batches/pages 
+# iterate over batches/pages and print the raw data of each item 
 for batch in results:
-    for item in batch:
-        print(item)
+    for item in batch['Items']:
+        print(item['item_data'])
 ```
 #### OPTIONS
 If a FromTime and ToTime are not provided the function returns the 250 newest items in the stream
