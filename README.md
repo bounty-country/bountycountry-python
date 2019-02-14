@@ -39,6 +39,7 @@ bountycountry.BC_PUBLIC_KEY = "....your.public.key.here...."
 bountycountry.BC_SECRET_KEY = "....your.secret.key.here...."
 ```
 
+
 ### Stream a live dataset
 
 The stream data is returned in JSON batches via a **python generator**. You can iterate over each batch/page of items returned using any loop. By default a batch will consist of 250 items.  
@@ -70,6 +71,7 @@ You can also manage costs by setting the MaxHourlyRequests parameter.
 * MinimizeRequests - whether to reduce request frequency to maximize result set size (reduce cost). Set to False if you have a strong requirement for minimal data latency and are less concerned by cost. (default=True)
 * MaxHourlyRequests - the maximum number of requests to perform per hour, if exceeded the function will sleep for OnMaxWait seconds (default=None, format = integer)
 * OnMaxWait - the number of seconds to wait if MaxHourlyRequests is exceeded (default = 0, format = integer)
+
 
 ### Get a specific time range within a stream 
 
@@ -108,6 +110,7 @@ If a FromTime and ToTime are not provided the function returns the 250 newest it
 * AutoPaginate - function will paginate through results until there are no more available OR until Limit is reached (default = True)
 * Last - if AutoPaginate is False and there are more results to paginate ('Last' will be a key in results), you can manually pass the 'Last' result to function to begin new query time range (format = integer epoch timestamp)
 * BatchSize - the number of results to return per request/page (maximum of 250, default=250, format = integer)
+
 
 
 ### Post items to a Stream
