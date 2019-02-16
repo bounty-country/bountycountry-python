@@ -280,6 +280,8 @@ def getLiveStream(datasetid, BatchSize=250, MinimizeRequests=True, MaxHourlyRequ
 							minimize_wait = minimize_wait - 1
 							if minimize_wait < 0:
 								minimize_wait = 0
+							print(f"Waiting {minimize_wait} seconds to minimize requests...")
+							time.sleep(minimize_wait)
 					elif body['Count'] != 0:
 						#check if any results in last request
 						parameters['Last'] = body['Items'][-1]["upload_timestamp"]
