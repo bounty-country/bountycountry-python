@@ -81,11 +81,9 @@ def postStream(datasetid, items, format='array'):
 			
 			r = requests.put('https://api.bountycountry.com/stream/datasets/', params=parameters, headers=headers, data=stringJSON)
 
-			print(r.elapsed.total_seconds())
-
 			if r.status_code == 200:
 				print(r.text)
-			if r.status_code == 429:
+			elif r.status_code == 429:
 				print(r.status_code)
 				print(r.text)
 				while r.status_code == 429:
