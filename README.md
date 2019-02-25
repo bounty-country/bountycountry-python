@@ -59,7 +59,7 @@ Batch Format
     'item_data':'the actual data goes here as a string or JSON object'
     },
     {'ttl':1550189000,
-    'upload_timestamp':1550109000.420983,
+    'upload_timestamp':1550109000.420456,
     'item_data':{"somekey":"somevalue","somelist":[204, 306, 99]}
     },    
     ]
