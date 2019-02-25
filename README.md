@@ -66,9 +66,9 @@ Batch Format
 }   
 ```
 
-The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. By default, the function will also attempt to minimize the requests used (and resultant costs to the user) by introducing additional waits if the result set return is less than the BatchSize (which is set to the maximum of 250 items by default). 
+The `getLiveStream` function will indefinitely poll Bounty Country for the latest data and implement an exponential backoff (starting with a 2 second wait) if there is no new data before retrying. By default, the function will also attempt to minimize the requests used (and resultant costs to the user) by introducing additional waits if the result set returned is less than the BatchSize (which is set to the maximum of 250 items by default). 
 
-You can also manage costs by setting the MaxHourlyRequests parameter. 
+You can also cap your request expenditure rate by setting the MaxHourlyRequests parameter. 
 
 #### OPTIONS
 * **BatchSize** - the number of results to return per request/page (maximum of 250, default=250, format = integer)
