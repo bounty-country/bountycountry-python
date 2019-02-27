@@ -229,7 +229,12 @@ def getLiveStream(datasetid, BatchSize=250, MinimizeRequests=True, MaxHourlyRequ
 		if r.status_code == 200:
 			print('Connected')
 			body = r.json()
-			body['Last'] = body['Items'][0]["upload_timestamp"]
+			if body['Count'] != 0:
+				body['Last'] = body['Items'][0]["upload_timestamp"]
+				yield(body)
+			else:
+				body['Last'] = str(int(time.time()))
+				print("Stream currently has no data")
 			parameters['Last'] = body['Last']
 			parameters['Order'] = 'Oldest'
 			yield(body)
