@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='bountycountry',
-      version='1.5.0',
+      version='1.6.0',
       url='https://github.com/bounty-country/bountycountry-python',
       license='MIT',
       author='Bounty Country',
