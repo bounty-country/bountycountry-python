@@ -64,7 +64,7 @@ def postStream(datasetid, items, format='array'):
 			itemstream = chunks(items)	
 		
 		for itembatch in itemstream:
-			print('getting one batch')
+			print('preparing batch for upload')
 			item = list(itembatch)
 			stringJSON = json.dumps({"items":item}, default=str)
 			if int(time.time() - last_signature_time)>270:
@@ -130,6 +130,9 @@ def getStreamRange(datasetid, FromTime=None, ToTime=None, Order='Newest', Last=N
 		parameters['BatchSize'] = BatchSize
 		parameters['Order']=Order
 		
+		if (FromTime is None) and (ToTime is None):
+			Limit = 250
+		
 		headers = {
 			'Content-Type':'application/json',
 			'Auth-Timestamp':curtime,
@@ -148,7 +151,7 @@ def getStreamRange(datasetid, FromTime=None, ToTime=None, Order='Newest', Last=N
 			print("Retrieved ",body['Count']," items in total.")
 			yield(body)
 			
-			while ('Last' in body) and (total_count < Limit):			
+			while ('Last' in body):			
 				
 				parameters ['Last'] = body['Last']
 				print('paging...')
@@ -176,7 +179,9 @@ def getStreamRange(datasetid, FromTime=None, ToTime=None, Order='Newest', Last=N
 							dif = total_count-Limit
 							body['Items'] = body['Items'][:-dif or None]
 							body['Count'] = body['Count'] - dif
-							body['Last'] = body['Items'][-1]["upload_timestamp"]
+							if body['Count'] != 0:
+								body['Last'] = body['Items'][-1]["upload_timestamp"]
+								yield(body)
 							print("Retrieved ", (total_count-dif), " items in total.")
 							break
 					print("Retrieved ", total_count, " items in total.")
